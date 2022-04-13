@@ -1,29 +1,36 @@
 #include "CoreMinimal.h"
+#include "SquirrelNoise.h"
 
 struct FSquirrelRandomStream
 {
 	FSquirrelRandomStream()
 		:m_initialSeed(0)
 		,m_currentSeed(0)
-		,m_position(0)
 	{
 	}
 
 	FSquirrelRandomStream(int32 seed)
 		:m_initialSeed(seed)
 		,m_currentSeed(seed)
-		,m_position(0)
 	{
 
 	}
-	void SetCurrentPosition(int32 position)
+
+	int32 GetInt() const
 	{
-		m_position = position;
+		MutateSeed();
+		return m_currentSeed;
 	}
 
-	int32 GetCurrentPosition() const
+	float GetFraction() const
 	{
-		return m_position;
+		MutateSeed();
+		return 
+	}
+
+	void MutateSeed() const
+	{
+		m_currentSeed = USquirrelNoiseFunctionLibrary::Get1DNoise(m_currentSeed++);
 	}
 
 	int32 GetInitialSeed() const
@@ -41,15 +48,13 @@ struct FSquirrelRandomStream
 		m_currentSeed = m_initialSeed;
 	}
 
-	void ResetSeed(uint32 seed = 0, int32 position = 0)
+	void ResetSeed(int32 seed = 0)
 	{
 		m_initialSeed = seed;
 		m_currentSeed = seed;
-		m_position = position;
 	}
 
 private:
 	int32 m_initialSeed;
-	int32 m_position;
-	uint32 m_currentSeed;
+	mutable uint32 m_currentSeed;
 };
