@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright JosaiProductions. All Rights Reserved.
 
 #pragma once
 
@@ -7,7 +7,7 @@
 #include "SquirrelNoise.generated.h"
 
 /**
- * implements squirrel noise function library based on squirrel noise 5. 
+ * Implements squirrel noise function library based on squirrel noise 5. 
  */
 UCLASS(meta=(ScriptName="SquirrelNoiseLibrary"))
 class USquirrelNoiseFunctionLibrary : public UBlueprintFunctionLibrary

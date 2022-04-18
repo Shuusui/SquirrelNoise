@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright JosaiProduction. All Rights Reserved.
 
 using UnrealBuildTool;
 
@@ -35,9 +35,7 @@ public class SquirrelNoise : ModuleRules
 			new string[]
 			{
 				"CoreUObject",
-				"Engine",
-				"Slate",
-				"SlateCore",
+				"Engine"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

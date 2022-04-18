@@ -1,3 +1,4 @@
+// Copyright JosaiProduction. All Rights Reserved.
 #include "CoreMinimal.h"
 #include "SquirrelNoise.h"
 

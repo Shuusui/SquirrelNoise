@@ -1,5 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
+// Copyright JosaiProduction. All Rights Reserved.
 #include "SquirrelNoise.h"
 
 	
