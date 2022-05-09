@@ -1,4 +1,4 @@
-// Copyright JosaiProductions. All Rights Reserved.
+// Copyright JosaiProduction. All Rights Reserved.
 
 #pragma once
 
@@ -67,7 +67,7 @@ public:
 	 * Takes a FIntPoint and returns pseudo-random and deterministic random number based on the value and the seed.
 	 * 
 	 * @param point The point to use as the 2d position.
-	 * @param seed The seed for the pseudo-random nummber
+	 * @param seed The seed for the pseudo-random number
 	 * 
 	 * @return The random number
 	 */
@@ -182,7 +182,7 @@ public:
 	template<typename T>
 	T static GetFraction(int32 value, int32 seed = 0)
 	{
-		static_assert(std::is_floating_point<T>());
+		static_assert(std::is_floating_point_v<T>);
 		return GetRange<T>(Get1DNoise(value, seed), TNumericLimits<uint32>::Min(), TNumericLimits<uint32>::Max());
 	}
 
@@ -199,7 +199,7 @@ public:
 	template<typename T> 
 	T static GetRange(int32 value, uint32 min, uint32 max)
 	{
-		static_assert(std::is_floating_point<T>());
+		static_assert(std::is_floating_point_v<T>);
 		return static_cast<T>(value - min) / (max - min);
 	}
 };

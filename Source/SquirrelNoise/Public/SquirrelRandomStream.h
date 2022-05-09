@@ -11,8 +11,8 @@ struct FSquirrelRandomStream
 	 * Default constructor, setting initial seed and current seed to 0
 	 */
 	FSquirrelRandomStream()
-		:m_initialSeed(0)
-		,m_currentSeed(0)
+		:m_position(0)
+		,m_seed(0)
 	{
 	}
 
@@ -22,8 +22,8 @@ struct FSquirrelRandomStream
 	 * @param seed The seed to set initially
 	 */
 	FSquirrelRandomStream(int32 seed)
-		:m_initialSeed(seed)
-		,m_currentSeed(seed)
+		:m_position(0)
+		,m_seed(seed)
 	{
 	}
 
@@ -34,8 +34,8 @@ struct FSquirrelRandomStream
 	 */
 	int32 GetInt() const
 	{
-		MutateSeed();
-		return m_currentSeed;
+		NextPosition();
+		return USquirrelNoiseFunctionLibrary::Get1DNoise(m_position, m_seed);
 	}
 
 	/**
@@ -43,30 +43,20 @@ struct FSquirrelRandomStream
 	 * 
 	 * @return random fraction.
 	 */
-	template<typename T>
+	template<typename T> 
 	T GetFraction() const
 	{
-		static_assert(std::is_floating_point<T>());
-		MutateSeed();
-		return USquirrelNoiseFunctionLibrary::GetRange<T>(m_currentSeed, TNumericLimits<uint32>::Min(), TNumericLimits<uint32>::Max());
+		static_assert(std::is_floating_point_v<T>);
+		NextPosition();
+		return USquirrelNoiseFunctionLibrary::GetFraction<T>(m_position, m_seed);
 	}
 
 	/**
-	 * Mutates the seed to the next value
+	 * Increments the position
 	 */
-	void MutateSeed() const
+	void NextPosition() const
 	{
-		m_currentSeed = USquirrelNoiseFunctionLibrary::Get1DNoise(m_currentSeed);
-	}
-
-	/**
-	 * returns the initial seed of the stream
-	 * 
-	 * @return The initial seed
-	 */
-	int32 GetInitialSeed() const
-	{
-		return m_initialSeed;
+		m_position++;
 	}
 
 	/**
@@ -74,32 +64,31 @@ struct FSquirrelRandomStream
 	 * 
 	 * @return The current seed
 	 */
-	uint32 GetCurrentSeed() const
+	uint32 GetSeed() const
 	{
-		return m_currentSeed;
+		return m_seed;
 	}
 
 	/**
-	 * resets the current seed to the initial seed
-	 */
-	void ResetSeedToInitial()
+	* returns the current position of the stream
+	* 
+	* @return The current position
+	*/
+	uint32 GetCurrentPosition() const
 	{
-		m_currentSeed = m_initialSeed;
+		return m_position;
 	}
 
 	/**
-	 * resets the seed to a value
+	 * Resets the position back to 0 to restart the stream.
 	 */
-	void ResetSeed(int32 seed = 0)
+	void ResetPosition()
 	{
-		m_initialSeed = seed;
-		m_currentSeed = seed;
+		m_position = 0;
 	}
 
 private:
-	int32 m_initialSeed;
-	/**
-	 * mutable current seed to mutate the seed inside the getter.
-	 */
-	mutable uint32 m_currentSeed;
+	/* mutable to cover const getter functions as well, where it would be legit to get a random number from the stream */
+	mutable uint32 m_position;
+	uint32 m_seed;
 };
